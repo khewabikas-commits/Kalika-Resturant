@@ -1,0 +1,60 @@
+@theme {
+  /* Brand Colors */
+  --color-forest-green: #1B3A2D;
+  --color-saffron: #E8882A;
+  --color-parchment: #FDF6EC;
+  --color-dark-brown: #2C1810;
+  --color-muted: #7A6652;
+  --color-dark-card: #0F2419;
+
+  /* Admin Colors */
+  --color-admin-bg: #0F1923;
+  --color-admin-sidebar: #1B3A2D;
+  --color-admin-header: #141f2b;
+  --color-admin-card: #1E2D3D;
+  --color-admin-text-secondary: #94A3B8;
+
+  /* Typography */
+  --font-family-heading: 'Lora', Georgia, serif;
+  --font-family-body: 'Nunito', 'Helvetica Neue', sans-serif;
+  --font-family-admin: 'Inter', system-ui, sans-serif;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  font-family: var(--font-family-body);
+  color: #2C1810;
+  background-color: #FDF6EC;
+  line-height: 1.65;
+  -webkit-font-smoothing: antialiased;
+}
+
+h1, h2, h3, h4, h5, h6 {
+  font-family: var(--font-family-heading);
+  line-height: 1.25;
+  color: inherit;
+}
+
+h1 { font-size: clamp(2.2rem, 5vw, 3.8rem); font-weight: 700; }
+h2 { font-size: clamp(1.7rem, 3.5vw, 2.5rem); font-weight: 600; }
+h3 { font-size: clamp(1.2rem, 2.5vw, 1.7rem); font-weight: 600; }
+h4 { font-size: 1.1rem; font-weight: 600; }
+
+button, input, select, textarea {
+  font-family: var(--font-family-body);
+}
+
+a {
+  text-decoration: none;
+}
+
+.scrollbar-hide {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
+.scrollbar-hide::-webkit-scrollbar {
+  display: none;
+}
