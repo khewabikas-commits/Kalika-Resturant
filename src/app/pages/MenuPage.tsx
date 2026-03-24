@@ -4,13 +4,14 @@ import Navbar from '../components/Navbar';
 import Footer from '../components/Footer';
 import WhatsAppButton from '../components/WhatsAppButton';
 import { ImageWithFallback } from '../components/ImageWithFallback';
-import { useMenu, menuCategories } from '../context/MenuContext';
+import { useMenu, publicMenuCategoryGroups } from '../context/MenuContext';
 import { UtensilsCrossed, Search, Filter } from 'lucide-react';
 
 export default function MenuPage() {
   const { menuItems } = useMenu();
   const navigate = useNavigate();
-  const [activeCategory, setActiveCategory] = useState(menuCategories[0]);
+  const groupNames = publicMenuCategoryGroups.map((g) => g.name);
+  const [activeCategory, setActiveCategory] = useState(groupNames[0]);
   const [searchTerm, setSearchTerm] = useState('');
   const [vegFilter, setVegFilter] = useState<'all' | 'veg' | 'nonveg'>('all');
   const categoryRefs = useRef<Record<string, HTMLDivElement | null>>({});
@@ -29,7 +30,7 @@ export default function MenuPage() {
   // Scroll spy
   useEffect(() => {
     const handleScroll = () => {
-      for (const cat of menuCategories) {
+      for (const cat of groupNames) {
         const el = categoryRefs.current[cat];
         if (el) {
           const rect = el.getBoundingClientRect();
@@ -45,8 +46,8 @@ export default function MenuPage() {
   }, []);
 
   // Group items by category
-  const grouped = menuCategories.reduce<Record<string, typeof menuItems>>((acc, cat) => {
-    let items = menuItems.filter((item) => item.category === cat);
+  const grouped = publicMenuCategoryGroups.reduce<Record<string, typeof menuItems>>((acc, group) => {
+    let items = menuItems.filter((item) => group.categories.includes(item.category));
     if (searchTerm) {
       items = items.filter((i) =>
         i.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
@@ -55,21 +56,9 @@ export default function MenuPage() {
     }
     if (vegFilter === 'veg') items = items.filter((i) => i.veg);
     if (vegFilter === 'nonveg') items = items.filter((i) => !i.veg);
-    acc[cat] = items;
+    acc[group.name] = items;
     return acc;
   }, {});
-
-  const categoryEmojis: Record<string, string> = {
-    'Starters': '🥗',
-    'Momos': '🥟',
-    'Soups': '🍜',
-    'Rice & Noodles': '🍚',
-    'Thali Sets': '🍛',
-    'Indian Mains': '🫕',
-    'Chinese': '🥢',
-    'Beverages': '☕',
-    'Desserts': '🍮',
-  };
 
   return (
     <div className="min-h-screen bg-[#FDF6EC]">
@@ -101,18 +90,18 @@ export default function MenuPage() {
       >
         <div className="max-w-7xl mx-auto px-6">
           <div className="flex gap-2 py-3 overflow-x-auto scrollbar-hide">
-            {menuCategories.map((cat) => (
+            {publicMenuCategoryGroups.map((group) => (
               <button
-                key={cat}
-                onClick={() => scrollToCategory(cat)}
+                key={group.name}
+                onClick={() => scrollToCategory(group.name)}
                 className={`flex items-center gap-1.5 px-5 py-2.5 rounded-full font-semibold whitespace-nowrap transition-all duration-200 text-sm flex-shrink-0 ${
-                  activeCategory === cat
+                  activeCategory === group.name
                     ? 'bg-[#E8882A] text-white shadow-md'
                     : 'bg-white text-[#2C1810] hover:bg-[#E8882A]/10 border border-[#E8882A]/20 hover:border-[#E8882A]/50'
                 }`}
               >
-                <span>{categoryEmojis[cat]}</span>
-                {cat}
+                <span>{group.emoji}</span>
+                {group.name}
               </button>
             ))}
           </div>
@@ -156,7 +145,8 @@ export default function MenuPage() {
 
       {/* Menu Content */}
       <div className="max-w-7xl mx-auto px-6 pb-16">
-        {menuCategories.map((cat) => {
+        {publicMenuCategoryGroups.map((group) => {
+          const cat = group.name;
           const items = grouped[cat];
           if (!items || items.length === 0) return null;
           return (
@@ -169,7 +159,7 @@ export default function MenuPage() {
               {/* Category Header */}
               <div className="flex items-center gap-4 mb-6">
                 <div className="flex items-center gap-3">
-                  <span className="text-3xl">{categoryEmojis[cat]}</span>
+                  <span className="text-3xl">{group.emoji}</span>
                   <h2 className="text-[#1B3A2D]" style={{ fontFamily: 'Lora, serif', fontSize: '1.8rem' }}>
                     {cat}
                   </h2>
@@ -224,7 +214,7 @@ export default function MenuPage() {
         })}
 
         {/* No results */}
-        {menuCategories.every((cat) => !grouped[cat] || grouped[cat].length === 0) && (
+        {publicMenuCategoryGroups.every((group) => !grouped[group.name] || grouped[group.name].length === 0) && (
           <div className="text-center py-20">
             <div className="text-6xl mb-4">🍽️</div>
             <h3 className="text-[#1B3A2D] text-xl mb-2">No dishes found</h3>

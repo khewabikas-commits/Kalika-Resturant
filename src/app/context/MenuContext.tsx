@@ -10,30 +10,359 @@ export type MenuItem = {
   image: string;
 };
 
-const defaultMenuItems: MenuItem[] = [
-  { id: 1,  name: 'Veg Spring Roll',      category: 'Starters',       description: 'Crispy rolls filled with fresh vegetables and herbs',   price: 80,  veg: true,  image: 'https://images.unsplash.com/photo-1772004839635-77804fbc7729?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&q=80&w=400' },
-  { id: 2,  name: 'Chicken 65',           category: 'Starters',       description: 'Spicy deep-fried chicken bites with curry leaves',       price: 150, veg: false, image: 'https://images.unsplash.com/photo-1610057099431-d73a1c9d2f2f?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&q=80&w=400' },
-  { id: 3,  name: 'Paneer Tikka',         category: 'Starters',       description: 'Grilled cottage cheese with bell peppers and spices',    price: 140, veg: true,  image: 'https://images.unsplash.com/photo-1567188040759-fb8a883dc6d8?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&q=80&w=400' },
-  { id: 4,  name: 'Veg Steam Momo',       category: 'Momos',          description: 'Classic steamed vegetable dumplings',                    price: 80,  veg: true,  image: 'https://images.unsplash.com/photo-1646197523131-7b69d5458ffa?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&q=80&w=400' },
-  { id: 5,  name: 'Chicken Fried Momo',   category: 'Momos',          description: 'Crispy fried chicken momos with dipping sauce',         price: 120, veg: false, image: 'https://images.unsplash.com/photo-1646197523131-7b69d5458ffa?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&q=80&w=400' },
-  { id: 6,  name: 'Jhol Momo',            category: 'Momos',          description: 'Momos served in spicy tomato-sesame soup',              price: 130, veg: false, image: 'https://images.unsplash.com/photo-1646197523131-7b69d5458ffa?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&q=80&w=400' },
-  { id: 7,  name: 'Tandoori Momo',        category: 'Momos',          description: 'Grilled momos with tandoori spices and chutney',        price: 140, veg: false, image: 'https://images.unsplash.com/photo-1646197523131-7b69d5458ffa?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&q=80&w=400' },
-  { id: 8,  name: 'Thukpa',               category: 'Soups',          description: 'Traditional Tibetan noodle soup with vegetables',       price: 100, veg: true,  image: 'https://images.unsplash.com/photo-1701773169812-750e47f0ab19?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&q=80&w=400' },
-  { id: 9,  name: 'Wonton Soup',          category: 'Soups',          description: 'Clear soup with delicate wonton dumplings',             price: 110, veg: false, image: 'https://images.unsplash.com/photo-1763994685090-c0927ff195d1?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&q=80&w=400' },
-  { id: 10, name: 'Veg Fried Rice',       category: 'Rice & Noodles', description: 'Classic Asian fried rice with seasonal vegetables',     price: 120, veg: true,  image: 'https://images.unsplash.com/photo-1591814252471-068b545dff62?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&q=80&w=400' },
-  { id: 11, name: 'Chicken Chow Mein',    category: 'Rice & Noodles', description: 'Stir-fried noodles with chicken and vegetables',        price: 130, veg: false, image: 'https://images.unsplash.com/photo-1609690963718-0b55905aef78?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&q=80&w=400' },
-  { id: 12, name: 'Hakka Noodles',        category: 'Rice & Noodles', description: 'Indo-Chinese style hakka noodles',                      price: 110, veg: true,  image: 'https://images.unsplash.com/photo-1609690963718-0b55905aef78?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&q=80&w=400' },
-  { id: 13, name: 'Dal Bhat Set',         category: 'Thali Sets',     description: 'Rice, lentils, vegetables, pickle, and papad',          price: 150, veg: true,  image: 'https://images.unsplash.com/photo-1764699486769-fc9a8b03130a?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&q=80&w=400' },
-  { id: 14, name: 'Full Thali',           category: 'Thali Sets',     description: 'Complete meal with rice, roti, dal, sabzi, and dessert',price: 200, veg: true,  image: 'https://images.unsplash.com/photo-1764699486769-fc9a8b03130a?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&q=80&w=400' },
-  { id: 15, name: 'Butter Chicken',       category: 'Indian Mains',   description: 'Tender chicken in rich tomato-butter sauce',            price: 180, veg: false, image: 'https://images.unsplash.com/photo-1585937421612-70a008356fbe?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&q=80&w=400' },
-  { id: 16, name: 'Paneer Butter Masala', category: 'Indian Mains',   description: 'Cottage cheese in creamy tomato-butter gravy',          price: 160, veg: true,  image: 'https://images.unsplash.com/photo-1567188040759-fb8a883dc6d8?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&q=80&w=400' },
-  { id: 17, name: 'Kung Pao Chicken',     category: 'Chinese',        description: 'Spicy chicken with peanuts and dried chilies',          price: 170, veg: false, image: 'https://images.unsplash.com/photo-1525755662778-989d0524087e?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&q=80&w=400' },
-  { id: 18, name: 'Masala Chai',          category: 'Beverages',      description: 'Traditional spiced tea brewed with ginger and cardamom',price: 30,  veg: true,  image: 'https://images.unsplash.com/photo-1648192312898-838f9b322f47?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&q=80&w=400' },
-  { id: 19, name: 'Cold Coffee',          category: 'Beverages',      description: 'Refreshing iced coffee with cream',                     price: 80,  veg: true,  image: 'https://images.unsplash.com/photo-1461023058943-07fcbe16d735?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&q=80&w=400' },
-  { id: 20, name: 'Fresh Lime Soda',      category: 'Beverages',      description: 'Chilled lime with soda, sweet or salted',               price: 50,  veg: true,  image: 'https://images.unsplash.com/photo-1622597467836-f3285f2131b8?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&q=80&w=400' },
-  { id: 21, name: 'Kheer',                category: 'Desserts',       description: 'Creamy rice pudding with saffron and cardamom',         price: 60,  veg: true,  image: 'https://images.unsplash.com/photo-1704977893815-c8e63f01a42e?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&q=80&w=400' },
-  { id: 22, name: 'Sikarni',              category: 'Desserts',       description: 'Sweet yogurt dessert with nuts and dry fruits',         price: 70,  veg: true,  image: 'https://images.unsplash.com/photo-1488477181946-6428a0291777?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&q=80&w=400' },
+export type PublicMenuCategoryGroup = {
+  name: string;
+  emoji: string;
+  categories: string[];
+};
+
+// Public Menu page groups (simplified category tabs)
+// - "Main Course" includes "Biryani"
+// - "Drinks" includes all alcohol categories
+export const publicMenuCategoryGroups: PublicMenuCategoryGroup[] = [
+  { name: 'Hot Beverage', emoji: '☕', categories: ['Hot Beverage'] },
+  { name: 'Shakes', emoji: '🥤', categories: ['Shakes'] },
+  { name: 'Cold Drinks', emoji: '🧊', categories: ['Cold Drinks'] },
+  { name: 'Soup', emoji: '🍲', categories: ['Soup'] },
+  { name: 'Sides', emoji: '🍽️', categories: ['Sides'] },
+  { name: 'Bites', emoji: '🌯', categories: ['Bites'] },
+  { name: 'Himalayan Delicacy', emoji: '🏔️', categories: ['Himalayan Delicacy'] },
+  { name: 'Noodles', emoji: '🍜', categories: ['Noodles'] },
+  { name: 'Starter Veg', emoji: '🥗', categories: ['Starter Veg'] },
+  { name: 'Non-Veg', emoji: '🍗', categories: ['Non-Veg'] },
+  { name: 'Main Course', emoji: '🍛', categories: ['Main Course', 'Biryani'] },
+  { name: 'Extra', emoji: '➕', categories: ['Extra'] },
+  { name: 'From Tawa', emoji: '🫓', categories: ['From Tawa'] },
+  { name: 'Thali', emoji: '🍽️', categories: ['Thali'] },
+  { name: 'Drinks', emoji: '🍻', categories: ['Rum', 'Whiskey', 'Vodka', 'Breezer', 'Beer', 'Wine', 'Can Beer', 'Brandy'] },
 ];
+
+type SeedItem = {
+  name: string;
+  category: string;
+  price: number;
+  veg: boolean;
+  description?: string;
+  image?: string;
+};
+
+const DEFAULT_FOOD_IMG = 'https://images.unsplash.com/photo-1540189549336-e6e99c3679fe?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&q=80&w=400';
+const DEFAULT_DRINK_IMG = 'https://images.unsplash.com/photo-1544145945-f90425340c7e?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&q=80&w=400';
+
+const DRINK_CATEGORIES = new Set(['Rum', 'Whiskey', 'Vodka', 'Breezer', 'Beer', 'Wine', 'Can Beer', 'Brandy']);
+
+const seedItems: SeedItem[] = [
+  // Hot Beverage
+  { name: 'Milk Tea', category: 'Hot Beverage', price: 30, veg: true },
+  { name: 'Black Tea', category: 'Hot Beverage', price: 20, veg: true },
+  { name: 'Milk Coffee', category: 'Hot Beverage', price: 60, veg: true },
+  { name: 'Black Coffee', category: 'Hot Beverage', price: 40, veg: true },
+  { name: 'Lemon Tea', category: 'Hot Beverage', price: 40, veg: true },
+  { name: 'Ginger Tea', category: 'Hot Beverage', price: 40, veg: true },
+  { name: 'Ginger Lemon Tea', category: 'Hot Beverage', price: 50, veg: true },
+  { name: 'Ginger Honey Tea', category: 'Hot Beverage', price: 60, veg: true },
+  { name: 'Masala Tea', category: 'Hot Beverage', price: 60, veg: true },
+
+  // Shakes
+  { name: 'Mango Shake', category: 'Shakes', price: 110, veg: true },
+  { name: 'Pineapple Shake', category: 'Shakes', price: 110, veg: true },
+  { name: 'Blue Berry Shake', category: 'Shakes', price: 130, veg: true },
+  { name: 'Watermelon Shake', category: 'Shakes', price: 140, veg: true },
+  { name: 'Vanilla Shake', category: 'Shakes', price: 110, veg: true },
+  { name: 'Banana Shake', category: 'Shakes', price: 110, veg: true },
+  { name: 'Strawberry Shake', category: 'Shakes', price: 110, veg: true },
+  { name: 'Cold Coffee', category: 'Shakes', price: 110, veg: true },
+
+  // Cold Drinks
+  { name: 'Red Blue', category: 'Cold Drinks', price: 150, veg: true },
+  { name: 'Hell', category: 'Cold Drinks', price: 80, veg: true },
+  { name: 'Predator', category: 'Cold Drinks', price: 80, veg: true },
+  { name: 'Coke', category: 'Cold Drinks', price: 30, veg: true },
+  { name: 'Fanta', category: 'Cold Drinks', price: 30, veg: true },
+  { name: 'Sprite', category: 'Cold Drinks', price: 30, veg: true },
+
+  // Soup
+  { name: 'Hot & Sour Soup (Veg)', category: 'Soup', price: 180, veg: true },
+  { name: 'Sweet Corn Soup', category: 'Soup', price: 190, veg: true },
+  { name: 'Mushroom Soup', category: 'Soup', price: 170, veg: true },
+  { name: 'Hot & Sour Soup (Chicken)', category: 'Soup', price: 220, veg: false },
+  { name: 'Coriander Soup', category: 'Soup', price: 170, veg: true },
+  { name: 'Cream of Mushroom Soup', category: 'Soup', price: 180, veg: true },
+  { name: 'Manchow Soup', category: 'Soup', price: 210, veg: true },
+
+  // Sides
+  { name: 'Papad Masala', category: 'Sides', price: 110, veg: true },
+  { name: 'Peanut Masala', category: 'Sides', price: 210, veg: true },
+  { name: 'Cheese Omelet', category: 'Sides', price: 160, veg: true },
+  { name: 'Plain Omelet', category: 'Sides', price: 50, veg: true },
+  { name: 'Sadheko Wai Wai', category: 'Sides', price: 80, veg: true },
+  { name: 'Masala Omelet', category: 'Sides', price: 40, veg: true },
+  { name: 'Sunny Side Up', category: 'Sides', price: 25, veg: true },
+
+  // Bites
+  { name: 'Egg Roll', category: 'Bites', price: 140, veg: true },
+  { name: 'Chicken Roll', category: 'Bites', price: 160, veg: false },
+  { name: 'Paneer Roll', category: 'Bites', price: 140, veg: true },
+  { name: 'Veg Roll', category: 'Bites', price: 110, veg: true },
+  { name: 'Spring Roll', category: 'Bites', price: 180, veg: true },
+  { name: 'Kurkure Spring Roll', category: 'Bites', price: 200, veg: true },
+
+  // Himalayan Delicacy
+  { name: 'Aloo Dum', category: 'Himalayan Delicacy', price: 120, veg: true },
+  { name: 'Chicken Taipo', category: 'Himalayan Delicacy', price: 70, veg: false },
+  { name: 'Chicken Jhol Momo', category: 'Himalayan Delicacy', price: 150, veg: false },
+  { name: 'Chicken Thukpa', category: 'Himalayan Delicacy', price: 100, veg: false },
+  { name: 'Chicken Momo', category: 'Himalayan Delicacy', price: 100, veg: false },
+  { name: 'Chicken Fry Momo', category: 'Himalayan Delicacy', price: 140, veg: false },
+  { name: 'Chicken Chilli Momo', category: 'Himalayan Delicacy', price: 150, veg: false },
+  { name: 'Pork Momo', category: 'Himalayan Delicacy', price: 130, veg: false },
+  { name: 'Pork Thukpa', category: 'Himalayan Delicacy', price: 120, veg: false },
+  { name: 'Pork Taipo', category: 'Himalayan Delicacy', price: 70, veg: false },
+
+  // Noodles
+  { name: 'Chicken Chowmein', category: 'Noodles', price: 110, veg: false },
+  { name: 'Chicken Hakka Noodles', category: 'Noodles', price: 170, veg: false },
+  { name: 'Chicken Burnt Garlic Noodles', category: 'Noodles', price: 190, veg: false },
+  { name: 'Chicken Brown Noodles', category: 'Noodles', price: 190, veg: false },
+  { name: 'Chicken Chilli Garlic Noodles', category: 'Noodles', price: 160, veg: false },
+  { name: 'Pork Chowmein', category: 'Noodles', price: 140, veg: false },
+  { name: 'Chicken Fry Rice', category: 'Noodles', price: 140, veg: false },
+  { name: 'Chicken Brown Rice', category: 'Noodles', price: 210, veg: false },
+  { name: 'Chicken Burnt Garlic Rice', category: 'Noodles', price: 140, veg: false },
+  { name: 'Chicken Chilli Garlic Rice', category: 'Noodles', price: 150, veg: false },
+  { name: 'Pork Fry Rice', category: 'Noodles', price: 150, veg: false },
+  { name: 'Schezwan Fried Rice', category: 'Noodles', price: 210, veg: false },
+
+  // Starter Veg
+  { name: 'Paneer Chilli', category: 'Starter Veg', price: 200, veg: true },
+  { name: 'Paneer Pakoda', category: 'Starter Veg', price: 200, veg: true },
+  { name: 'Paneer Dry Fry', category: 'Starter Veg', price: 200, veg: true },
+  { name: 'Corn Salt & Pepper', category: 'Starter Veg', price: 210, veg: true },
+  { name: 'French Fry', category: 'Starter Veg', price: 200, veg: true },
+  { name: 'French Fry Piri Piri', category: 'Starter Veg', price: 230, veg: true },
+  { name: 'Chilli Potato', category: 'Starter Veg', price: 210, veg: true },
+  { name: 'Honey Chilli Potato', category: 'Starter Veg', price: 240, veg: true },
+  { name: 'Crispy Potato Dzegden', category: 'Starter Veg', price: 220, veg: true },
+  { name: 'Mushroom Chilli', category: 'Starter Veg', price: 250, veg: true },
+  { name: 'Veg Pakoda', category: 'Starter Veg', price: 200, veg: true },
+  { name: 'Golden Baby Corn', category: 'Starter Veg', price: 210, veg: true },
+  { name: 'Corn Chilli', category: 'Starter Veg', price: 240, veg: true },
+  { name: 'Onion Pakora', category: 'Starter Veg', price: 200, veg: true },
+  { name: 'Cheese Ball', category: 'Starter Veg', price: 200, veg: true },
+  { name: 'Onion Ring', category: 'Starter Veg', price: 180, veg: true },
+  { name: 'Paneer Finger', category: 'Starter Veg', price: 220, veg: true },
+
+  // Non-Veg
+  { name: 'Chicken Chilli', category: 'Non-Veg', price: 310, veg: false },
+  { name: 'Chicken Popcorn', category: 'Non-Veg', price: 300, veg: false },
+  { name: 'Chicken 65', category: 'Non-Veg', price: 310, veg: false },
+  { name: 'Chicken Lollipop (6 pcs)', category: 'Non-Veg', price: 300, veg: false },
+  { name: 'Chicken Dry Fry', category: 'Non-Veg', price: 260, veg: false },
+  { name: 'BBQ Wings', category: 'Non-Veg', price: 350, veg: false },
+  { name: 'Oyster Chilli Chicken', category: 'Non-Veg', price: 350, veg: false },
+  { name: 'Pepper Chicken', category: 'Non-Veg', price: 310, veg: false },
+  { name: 'Drums of Heaven', category: 'Non-Veg', price: 320, veg: false },
+  { name: 'Kalika Special Chicken', category: 'Non-Veg', price: 350, veg: false },
+  { name: 'Ginger Chicken', category: 'Non-Veg', price: 260, veg: false },
+  { name: 'Pork Chilli', category: 'Non-Veg', price: 350, veg: false },
+  { name: 'Pork Dry Fry', category: 'Non-Veg', price: 300, veg: false },
+  { name: 'Prawn Chilli', category: 'Non-Veg', price: 380, veg: false },
+  { name: 'Prawn Dry Fry', category: 'Non-Veg', price: 350, veg: false },
+  { name: 'Fish Finger', category: 'Non-Veg', price: 310, veg: false },
+  { name: 'Fish Fry', category: 'Non-Veg', price: 280, veg: false },
+  { name: 'Fish Chilli', category: 'Non-Veg', price: 310, veg: false },
+  { name: 'Crispy Chicken', category: 'Non-Veg', price: 210, veg: false },
+  { name: 'Hot Garlic Chicken', category: 'Non-Veg', price: 300, veg: false },
+  { name: 'Teriyaki Chicken', category: 'Non-Veg', price: 300, veg: false },
+  { name: 'Golden Fry Prawn', category: 'Non-Veg', price: 350, veg: false },
+  { name: 'Grill Chicken', category: 'Non-Veg', price: 450, veg: false },
+  { name: 'Piri Piri Chicken', category: 'Non-Veg', price: 300, veg: false },
+
+  // Main Course
+  { name: 'Steam Rice', category: 'Main Course', price: 80, veg: true },
+  { name: 'Veg Pulao', category: 'Main Course', price: 200, veg: true },
+  { name: 'Jeera Rice', category: 'Main Course', price: 130, veg: true },
+  { name: 'Kadai Paneer', category: 'Main Course', price: 210, veg: true },
+  { name: 'Kashmiri Pulao', category: 'Main Course', price: 170, veg: true },
+  { name: 'Ghee Rice', category: 'Main Course', price: 150, veg: true },
+  { name: 'Chicken Masala', category: 'Main Course', price: 210, veg: false },
+  { name: 'Chicken Kosa', category: 'Main Course', price: 210, veg: false },
+  { name: 'Chicken Do Pyaza', category: 'Main Course', price: 230, veg: false },
+  { name: 'Paneer Malai Kofta', category: 'Main Course', price: 350, veg: true },
+  { name: 'Sai Paneer', category: 'Main Course', price: 300, veg: true },
+  { name: 'Fish Curry (2 pcs)', category: 'Main Course', price: 200, veg: false },
+  { name: 'Chicken Curry', category: 'Main Course', price: 250, veg: false },
+  { name: 'Pepper Chicken', category: 'Main Course', price: 310, veg: false },
+  { name: 'Pork Curry', category: 'Main Course', price: 300, veg: false },
+  { name: 'Mutton Curry', category: 'Main Course', price: 400, veg: false },
+  { name: 'Buff Curry', category: 'Main Course', price: 400, veg: false },
+  { name: 'Kadai Chicken', category: 'Main Course', price: 320, veg: false },
+  { name: 'Chicken Butter Masala', category: 'Main Course', price: 350, veg: false },
+  { name: 'Mix Veg (1 plate)', category: 'Main Course', price: 80, veg: true },
+  { name: 'Matar Paneer (1 plate)', category: 'Main Course', price: 200, veg: true },
+  { name: 'Kadhai Paneer (1 plate)', category: 'Main Course', price: 210, veg: true },
+  { name: 'Paneer Butter Masala', category: 'Main Course', price: 250, veg: true },
+  { name: 'Aloo Jeera Masala', category: 'Main Course', price: 100, veg: true },
+  { name: 'Aloo Matar', category: 'Main Course', price: 100, veg: true },
+  { name: 'Egg Curry', category: 'Main Course', price: 100, veg: false },
+  { name: 'Plain Dal', category: 'Main Course', price: 50, veg: true },
+  { name: 'Dal Fry', category: 'Main Course', price: 70, veg: true },
+  { name: 'Dal Tadka', category: 'Main Course', price: 100, veg: true },
+
+  // Biryani
+  { name: 'Veg Biryani', category: 'Biryani', price: 200, veg: true },
+  { name: 'Chicken Biryani', category: 'Biryani', price: 300, veg: false },
+
+  // Extra
+  { name: 'Puri Sabji with Curd', category: 'Extra', price: 140, veg: true },
+  { name: 'Roti Sabji with Curd', category: 'Extra', price: 160, veg: true },
+
+  // From Tawa
+  { name: 'Tawa Roti (1 pc)', category: 'From Tawa', price: 20, veg: true },
+  { name: 'Butter Roti (1 pc)', category: 'From Tawa', price: 25, veg: true },
+  { name: 'Aloo Paratha with Curd', category: 'From Tawa', price: 130, veg: true },
+  { name: 'Paneer Paratha with Curd', category: 'From Tawa', price: 150, veg: true },
+  { name: 'Plain Paratha (1 pc)', category: 'From Tawa', price: 30, veg: true },
+  { name: 'Lachha Paratha (1 pc)', category: 'From Tawa', price: 60, veg: true },
+
+  // Thali
+  { name: 'Veg Thali', category: 'Thali', price: 140, veg: true },
+  { name: 'Chicken Thali', category: 'Thali', price: 180, veg: false },
+  { name: 'Pork Thali', category: 'Thali', price: 200, veg: false },
+  { name: 'Fish Thali', category: 'Thali', price: 180, veg: false },
+  { name: 'Paneer Thali', category: 'Thali', price: 150, veg: true },
+
+  // Drinks — Rum
+  { name: 'Old Monk (30ml)', category: 'Rum', price: 30, veg: true },
+  { name: 'Old Monk (60ml)', category: 'Rum', price: 40, veg: true },
+  { name: 'XXX Rum (30ml)', category: 'Rum', price: 30, veg: true },
+  { name: 'XXX Rum (60ml)', category: 'Rum', price: 40, veg: true },
+  { name: 'Bacardi Lemon (30ml)', category: 'Rum', price: 50, veg: true },
+  { name: 'Bacardi Lemon (60ml)', category: 'Rum', price: 90, veg: true },
+  { name: 'Bacardi Mango (30ml)', category: 'Rum', price: 50, veg: true },
+  { name: 'Bacardi Mango (60ml)', category: 'Rum', price: 90, veg: true },
+  { name: 'Bacardi Plain (30ml)', category: 'Rum', price: 50, veg: true },
+  { name: 'Bacardi Plain (60ml)', category: 'Rum', price: 90, veg: true },
+  { name: 'McDowells (30ml)', category: 'Rum', price: 40, veg: true },
+  { name: 'McDowells (60ml)', category: 'Rum', price: 50, veg: true },
+  { name: 'Black Bacardi (30ml)', category: 'Rum', price: 40, veg: true },
+  { name: 'Black Bacardi (60ml)', category: 'Rum', price: 80, veg: true },
+  { name: 'Old Monk Coffee (30ml)', category: 'Rum', price: 50, veg: true },
+  { name: 'Old Monk Coffee (60ml)', category: 'Rum', price: 90, veg: true },
+
+  // Drinks — Whiskey
+  { name: 'Royal Stag (30ml)', category: 'Whiskey', price: 40, veg: true },
+  { name: 'Royal Stag (60ml)', category: 'Whiskey', price: 50, veg: true },
+  { name: 'Royal Blue (30ml)', category: 'Whiskey', price: 30, veg: true },
+  { name: 'Royal Blue (60ml)', category: 'Whiskey', price: 45, veg: true },
+  { name: 'Blenders Pride (30ml)', category: 'Whiskey', price: 50, veg: true },
+  { name: 'Blenders Pride (60ml)', category: 'Whiskey', price: 90, veg: true },
+  { name: 'Signature (30ml)', category: 'Whiskey', price: 50, veg: true },
+  { name: 'Signature (60ml)', category: 'Whiskey', price: 90, veg: true },
+  { name: '100 Piper (30ml)', category: 'Whiskey', price: 120, veg: true },
+  { name: '100 Piper (60ml)', category: 'Whiskey', price: 170, veg: true },
+  { name: "Teacher's 50 (30ml)", category: 'Whiskey', price: 140, veg: true },
+  { name: "Teacher's 50 (60ml)", category: 'Whiskey', price: 210, veg: true },
+  { name: 'Black Dog I (30ml)', category: 'Whiskey', price: 140, veg: true },
+  { name: 'Black Dog I (60ml)', category: 'Whiskey', price: 220, veg: true },
+  { name: 'Black Dog II (30ml)', category: 'Whiskey', price: 110, veg: true },
+  { name: 'Black Dog II (60ml)', category: 'Whiskey', price: 170, veg: true },
+  { name: 'Red Label (30ml)', category: 'Whiskey', price: 140, veg: true },
+  { name: 'Red Label (60ml)', category: 'Whiskey', price: 170, veg: true },
+  { name: '8PM Black (30ml)', category: 'Whiskey', price: 40, veg: true },
+  { name: '8PM Black (60ml)', category: 'Whiskey', price: 50, veg: true },
+  { name: 'Antiquity Blue (30ml)', category: 'Whiskey', price: 70, veg: true },
+  { name: 'Antiquity Blue (60ml)', category: 'Whiskey', price: 120, veg: true },
+  { name: 'Teesta (30ml)', category: 'Whiskey', price: 40, veg: true },
+  { name: 'Teesta (60ml)', category: 'Whiskey', price: 60, veg: true },
+  { name: 'Black Piper (30ml)', category: 'Whiskey', price: 30, veg: true },
+  { name: 'Black Piper (60ml)', category: 'Whiskey', price: 45, veg: true },
+  { name: 'Green Label (30ml)', category: 'Whiskey', price: 30, veg: true },
+  { name: 'Green Label (60ml)', category: 'Whiskey', price: 50, veg: true },
+  { name: 'Ocean Blue (30ml)', category: 'Whiskey', price: 30, veg: true },
+  { name: 'Ocean Blue (60ml)', category: 'Whiskey', price: 45, veg: true },
+  { name: "Ballantine's (30ml)", category: 'Whiskey', price: 110, veg: true },
+  { name: "Ballantine's (60ml)", category: 'Whiskey', price: 170, veg: true },
+  { name: 'Momentum (30ml)', category: 'Whiskey', price: 40, veg: true },
+  { name: 'Momentum (60ml)', category: 'Whiskey', price: 60, veg: true },
+  { name: 'Vat 69 (30ml)', category: 'Whiskey', price: 110, veg: true },
+  { name: 'Vat 69 (60ml)', category: 'Whiskey', price: 170, veg: true },
+  { name: 'Black Label (30ml)', category: 'Whiskey', price: 200, veg: true },
+  { name: 'Black Label (60ml)', category: 'Whiskey', price: 320, veg: true },
+  { name: 'Jameson (30ml)', category: 'Whiskey', price: 140, veg: true },
+  { name: 'Jameson (60ml)', category: 'Whiskey', price: 200, veg: true },
+
+  // Drinks — Vodka
+  { name: 'Magic Moment Plain (30ml)', category: 'Vodka', price: 40, veg: true },
+  { name: 'Magic Moment Plain (60ml)', category: 'Vodka', price: 60, veg: true },
+  { name: 'Magic Moment Apple (30ml)', category: 'Vodka', price: 40, veg: true },
+  { name: 'Magic Moment Apple (60ml)', category: 'Vodka', price: 60, veg: true },
+  { name: 'White Mischief (30ml)', category: 'Vodka', price: 40, veg: true },
+  { name: 'White Mischief (60ml)', category: 'Vodka', price: 60, veg: true },
+  { name: 'Smirnoff (30ml)', category: 'Vodka', price: 50, veg: true },
+  { name: 'Smirnoff (60ml)', category: 'Vodka', price: 90, veg: true },
+  { name: 'Blue Sapphire (30ml)', category: 'Vodka', price: 40, veg: true },
+  { name: 'Blue Sapphire (60ml)', category: 'Vodka', price: 60, veg: true },
+
+  // Drinks — Breezer (275ml)
+  { name: 'Black Berry (275ml)', category: 'Breezer', price: 140, veg: true },
+  { name: 'Jamaican (275ml)', category: 'Breezer', price: 140, veg: true },
+  { name: 'Cranberry Bacardi (275ml)', category: 'Breezer', price: 150, veg: true },
+
+  // Drinks — Beer (750ml)
+  { name: 'Hit (750ml)', category: 'Beer', price: 140, veg: true },
+  { name: 'Kingfisher Stag (750ml)', category: 'Beer', price: 150, veg: true },
+  { name: 'Kingfisher Premium (750ml)', category: 'Beer', price: 150, veg: true },
+  { name: 'Dansberg Strong (750ml)', category: 'Beer', price: 150, veg: true },
+  { name: 'Old Monk Strong (750ml)', category: 'Beer', price: 140, veg: true },
+  { name: 'Red Semo Strong (750ml)', category: 'Beer', price: 150, veg: true },
+  { name: 'Red Semo Premium (750ml)', category: 'Beer', price: 150, veg: true },
+
+  // Drinks — Wine
+  { name: 'Zang Wine (30ml)', category: 'Wine', price: 30, veg: true },
+  { name: 'Zang Wine (60ml)', category: 'Wine', price: 50, veg: true },
+  { name: 'Red Wine (30ml)', category: 'Wine', price: 30, veg: true },
+  { name: 'Red Wine (60ml)', category: 'Wine', price: 50, veg: true },
+  { name: 'Red Saino (30ml)', category: 'Wine', price: 30, veg: true },
+  { name: 'Red Saino (60ml)', category: 'Wine', price: 50, veg: true },
+  { name: 'Vasco Red (30ml)', category: 'Wine', price: 30, veg: true },
+  { name: 'Vasco Red (60ml)', category: 'Wine', price: 50, veg: true },
+  { name: 'Vasco Peach (30ml)', category: 'Wine', price: 30, veg: true },
+  { name: 'Vasco Peach (60ml)', category: 'Wine', price: 50, veg: true },
+  { name: 'Arucha (30ml)', category: 'Wine', price: 30, veg: true },
+  { name: 'Arucha (60ml)', category: 'Wine', price: 50, veg: true },
+  { name: 'Samara (30ml)', category: 'Wine', price: 40, veg: true },
+  { name: 'Samara (60ml)', category: 'Wine', price: 60, veg: true },
+
+  // Drinks — Can Beer (500ml)
+  { name: 'Kingfisher Strong (500ml)', category: 'Can Beer', price: 170, veg: true },
+  { name: 'Kingfisher Premium (500ml)', category: 'Can Beer', price: 160, veg: true },
+  { name: 'Old Monk Strong (500ml)', category: 'Can Beer', price: 140, veg: true },
+  { name: 'Budweiser Magnum (500ml)', category: 'Can Beer', price: 210, veg: true },
+  { name: 'Budweiser Premium (500ml)', category: 'Can Beer', price: 200, veg: true },
+  { name: 'Red Semo Strong (500ml)', category: 'Can Beer', price: 140, veg: true },
+  { name: 'Red Semo Premium (500ml)', category: 'Can Beer', price: 140, veg: true },
+
+  // Drinks — Brandy
+  { name: 'Honey Bee (30ml)', category: 'Brandy', price: 30, veg: true },
+  { name: 'Honey Bee (60ml)', category: 'Brandy', price: 50, veg: true },
+  { name: 'Mansion House (30ml)', category: 'Brandy', price: 40, veg: true },
+  { name: 'Mansion House (60ml)', category: 'Brandy', price: 60, veg: true },
+  { name: 'Morpheus (30ml)', category: 'Brandy', price: 50, veg: true },
+  { name: 'Morpheus (60ml)', category: 'Brandy', price: 80, veg: true },
+];
+
+const getDefaultImage = (category: string) => (DRINK_CATEGORIES.has(category) ? DEFAULT_DRINK_IMG : DEFAULT_FOOD_IMG);
+
+const defaultMenuItems: MenuItem[] = seedItems.map((item, index) => ({
+  id: index + 1,
+  name: item.name,
+  category: item.category,
+  description: item.description ?? '',
+  price: item.price,
+  veg: item.veg,
+  image: item.image ?? getDefaultImage(item.category),
+}));
 
 type MenuContextType = {
   menuItems: MenuItem[];
@@ -45,7 +374,8 @@ type MenuContextType = {
 
 const MenuContext = createContext<MenuContextType | null>(null);
 
-const STORAGE_KEY = 'kalika_menu_items';
+// Bump storage key so newly seeded menu replaces older placeholder data.
+const STORAGE_KEY = 'kalika_menu_items_v2';
 
 export function MenuProvider({ children }: { children: ReactNode }) {
   const [menuItems, setMenuItemsState] = useState<MenuItem[]>(() => {
@@ -91,6 +421,27 @@ export function useMenu() {
 }
 
 export const menuCategories = [
-  'Starters', 'Momos', 'Soups', 'Rice & Noodles',
-  'Thali Sets', 'Indian Mains', 'Chinese', 'Beverages', 'Desserts',
+  'Hot Beverage',
+  'Shakes',
+  'Cold Drinks',
+  'Soup',
+  'Sides',
+  'Bites',
+  'Himalayan Delicacy',
+  'Noodles',
+  'Starter Veg',
+  'Non-Veg',
+  'Main Course',
+  'Biryani',
+  'Extra',
+  'From Tawa',
+  'Thali',
+  'Rum',
+  'Whiskey',
+  'Vodka',
+  'Breezer',
+  'Beer',
+  'Wine',
+  'Can Beer',
+  'Brandy',
 ];

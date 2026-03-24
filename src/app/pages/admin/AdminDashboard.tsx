@@ -16,6 +16,7 @@ import {
   ChevronLeft,
   ChevronRight,
   Save,
+  Minus,
   AlertTriangle,
   UtensilsCrossed,
   ExternalLink,
@@ -76,6 +77,11 @@ export default function AdminDashboard() {
   const handleDelete = (id: number) => {
     deleteMenuItem(id);
     setConfirmDelete(null);
+  };
+
+  const adjustPrice = (item: MenuItem, delta: number) => {
+    const nextPrice = Math.max(0, (item.price ?? 0) + delta);
+    updateMenuItem({ ...item, price: nextPrice });
   };
 
   const filteredMenu = menuItems.filter((item) =>
@@ -329,7 +335,31 @@ export default function AdminDashboard() {
                               </span>
                             </td>
                             <td className="px-5 py-4">
-                              <span style={{ fontFamily: 'Lora, serif', color: '#E8882A', fontWeight: 700, fontSize: '1.125rem' }}>₹{item.price}</span>
+                              <div className="flex items-center gap-3">
+                                <span style={{ fontFamily: 'Lora, serif', color: '#E8882A', fontWeight: 700, fontSize: '1.125rem' }}>₹{item.price}</span>
+                                <div className="flex items-center gap-1">
+                                  <button
+                                    type="button"
+                                    onClick={() => adjustPrice(item, -10)}
+                                    className="w-8 h-8 rounded-lg flex items-center justify-center transition-colors"
+                                    style={{ background: 'rgba(255,255,255,0.07)', color: 'rgba(255,255,255,0.75)' }}
+                                    aria-label={`Decrease price for ${item.name}`}
+                                    title="-10"
+                                  >
+                                    <Minus className="w-4 h-4" />
+                                  </button>
+                                  <button
+                                    type="button"
+                                    onClick={() => adjustPrice(item, 10)}
+                                    className="w-8 h-8 rounded-lg flex items-center justify-center transition-colors"
+                                    style={{ background: 'rgba(232,136,42,0.16)', color: '#E8882A' }}
+                                    aria-label={`Increase price for ${item.name}`}
+                                    title="+10"
+                                  >
+                                    <Plus className="w-4 h-4" />
+                                  </button>
+                                </div>
+                              </div>
                             </td>
                             <td className="px-5 py-4">
                               <div className="flex items-center gap-2">

@@ -1,20 +1,20 @@
 import { Link } from 'react-router';
 import { ArrowRight } from 'lucide-react';
 import { motion } from 'motion/react';
-
-const categories = [
-  { name: 'Starters', emoji: '🥗', count: 3 },
-  { name: 'Momos', emoji: '🥟', count: 4 },
-  { name: 'Soups', emoji: '🍜', count: 2 },
-  { name: 'Rice & Noodles', emoji: '🍚', count: 3 },
-  { name: 'Thali Sets', emoji: '🍛', count: 2 },
-  { name: 'Indian Mains', emoji: '🫕', count: 2 },
-  { name: 'Chinese', emoji: '🥢', count: 2 },
-  { name: 'Beverages', emoji: '☕', count: 3 },
-  { name: 'Desserts', emoji: '🍮', count: 2 },
-];
+import { useMenu, publicMenuCategoryGroups } from '../../context/MenuContext';
 
 export default function MenuPreview() {
+  const { menuItems } = useMenu();
+
+  const categories = publicMenuCategoryGroups
+    .map((group) => ({
+      name: group.name,
+      emoji: group.emoji,
+      count: menuItems.filter((i) => group.categories.includes(i.category)).length,
+    }))
+    .filter((c) => c.count > 0)
+    .slice(0, 9);
+
   return (
     <section className="bg-[#1B3A2D] py-24 px-6 relative overflow-hidden">
       {/* Decorative elements */}
@@ -100,7 +100,9 @@ export default function MenuPreview() {
               <ArrowRight className="w-5 h-5 group-hover:translate-x-1 transition-transform" />
             </Link>
 
-            <p className="text-white/40 text-sm mt-6">22+ dishes across 9 categories</p>
+            <p className="text-white/40 text-sm mt-6">
+              {menuItems.length}+ dishes across {publicMenuCategoryGroups.length} categories
+            </p>
           </motion.div>
         </div>
       </div>
