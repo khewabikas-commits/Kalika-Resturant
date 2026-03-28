@@ -1,4 +1,5 @@
 import { createContext, useContext, useState, useEffect, ReactNode } from 'react';
+import { LOCAL_UPLOADED_IMAGE_BASE_PATH, LOCAL_UPLOADED_IMAGE_FILES } from './localUploadedImages';
 
 export type MenuItem = {
   id: number;
@@ -49,7 +50,161 @@ type SeedItem = {
 const DEFAULT_FOOD_IMG = 'https://images.unsplash.com/photo-1540189549336-e6e99c3679fe?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&q=80&w=400';
 const DEFAULT_DRINK_IMG = 'https://images.unsplash.com/photo-1544145945-f90425340c7e?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&q=80&w=400';
 
+// Uploaded local images (served via Vite publicDir) live at:
+// /assets/images/<filename>
+// The manifest is generated from src/public/assets/images.
+const LOCAL_IMAGE_BASE_PATH = LOCAL_UPLOADED_IMAGE_BASE_PATH;
+const LOCAL_COMMON_DRINK_IMAGE = `${LOCAL_IMAGE_BASE_PATH}common.jpg`;
+
+const LOCAL_UPLOADED_FILE_BY_LOWER = new Map<string, string>();
+for (const file of LOCAL_UPLOADED_IMAGE_FILES) LOCAL_UPLOADED_FILE_BY_LOWER.set(file.toLowerCase(), file);
+
+const normalizeLocalImageKey = (value: string) =>
+  value
+    .toLowerCase()
+    .normalize('NFKD')
+    .replace(/[\u0300-\u036f]/g, '')
+    .replace(/[’']/g, '')
+    .replace(/&/g, ' and ')
+    .replace(/[^a-z0-9]+/g, ' ')
+    .trim()
+    .replace(/\s+/g, ' ');
+
+const LOCAL_IMAGE_BY_KEY = new Map<string, string>();
+for (const file of LOCAL_UPLOADED_IMAGE_FILES) {
+  const baseName = file.replace(/\.[^.]+$/i, '');
+  LOCAL_IMAGE_BY_KEY.set(normalizeLocalImageKey(baseName), file);
+}
+
+// Some uploaded files have typos/inconsistent naming; map common menu names to them.
+const LOCAL_IMAGE_KEY_ALIASES: Record<string, string> = {
+  [normalizeLocalImageKey('Pineapple Shake')]: normalizeLocalImageKey('Pinappe Shake'),
+  [normalizeLocalImageKey('Manchow Soup')]: normalizeLocalImageKey('Munchow Soup'),
+  [normalizeLocalImageKey('Mushroom Soup')]: normalizeLocalImageKey('Mushromm Soup'),
+  [normalizeLocalImageKey('Cheese Omelet')]: normalizeLocalImageKey('Cheese Omlet'),
+  [normalizeLocalImageKey('Plain Omelet')]: normalizeLocalImageKey('Cheese Omlet'),
+  [normalizeLocalImageKey('Masala Omelet')]: normalizeLocalImageKey('Masala omlrt'),
+  [normalizeLocalImageKey('Paneer Roll')]: normalizeLocalImageKey('Paneere Roll'),
+  [normalizeLocalImageKey('Kurkure Spring Roll')]: normalizeLocalImageKey('Kurkure  Spring Roll'),
+  [normalizeLocalImageKey('Pork Thukpa')]: normalizeLocalImageKey('Pork Thupka'),
+};
+
+const toLocalImageUrl = (fileName: string) => `${LOCAL_IMAGE_BASE_PATH}${encodeURIComponent(fileName)}`;
+
+const getLocalImageForItem = (name: string) => {
+  const candidates = [name, name.replace(/\s*\([^)]*\)\s*/g, ' ').trim()].filter(Boolean);
+  for (const candidate of candidates) {
+    const key = normalizeLocalImageKey(candidate);
+    const resolvedKey = LOCAL_IMAGE_KEY_ALIASES[key] ?? key;
+    const file = LOCAL_IMAGE_BY_KEY.get(resolvedKey);
+    if (file) return toLocalImageUrl(file);
+  }
+
+  // Shared fallback: biryani photo for both veg/non-veg biryani.
+  // NOTE: Keep this above the generic chicken fallback so "Chicken Biryani"
+  // uses biriyani.jpg (not chicken.jpg).
+  const genericBiryaniFile = LOCAL_UPLOADED_FILE_BY_LOWER.get('biriyani.jpg');
+  if (genericBiryaniFile) {
+    const tokens = normalizeLocalImageKey(name).split(' ');
+    if (tokens.includes('biryani') || tokens.includes('biriyani')) return toLocalImageUrl(genericBiryaniFile);
+  }
+
+  // Shared fallback: if the repo has a generic chicken image uploaded, use it
+  // for chicken items that don't yet have a dedicated per-item file.
+  const genericChickenFile = LOCAL_UPLOADED_FILE_BY_LOWER.get('chicken.jpg');
+  if (genericChickenFile) {
+    const tokens = normalizeLocalImageKey(name).split(' ');
+    if (tokens.includes('chicken')) return toLocalImageUrl(genericChickenFile);
+  }
+
+  return undefined;
+};
+
+const extractLocalUploadedFileFromUrl = (url: string) => {
+  const marker = '/assets/images/';
+  const idx = url.toLowerCase().lastIndexOf(marker);
+  if (idx === -1) return undefined;
+
+  const raw = url.slice(idx + marker.length).split('?')[0]?.split('#')[0] ?? '';
+  if (!raw) return undefined;
+
+  let decoded = raw;
+  try {
+    decoded = decodeURIComponent(raw);
+  } catch {
+    // If it's not valid URI encoding, fall back to raw
+  }
+
+  // Enforce the exact filename case that exists in the manifest.
+  return LOCAL_UPLOADED_FILE_BY_LOWER.get(decoded.toLowerCase());
+};
+
+const isTeaOrCoffeeFileName = (fileName: string | undefined) => {
+  if (!fileName) return false;
+  const base = fileName.replace(/\.[^.]+$/i, '');
+  const tokens = normalizeLocalImageKey(base).split(' ');
+  return tokens.includes('tea') || tokens.includes('coffee');
+};
+
 const DRINK_CATEGORIES = new Set(['Rum', 'Whiskey', 'Vodka', 'Breezer', 'Beer', 'Wine', 'Can Beer', 'Brandy']);
+const BEVERAGE_CATEGORIES = new Set(['Hot Beverage', 'Shakes', 'Cold Drinks', ...Array.from(DRINK_CATEGORIES)]);
+
+// These URLs are already used elsewhere in the site, so they are known-good
+// in the deployment/network environment.
+const IMG_MOMO = 'https://images.unsplash.com/photo-1646197523131-7b69d5458ffa?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&q=80&w=800';
+const IMG_THUKPA = 'https://images.unsplash.com/photo-1701773169812-750e47f0ab19?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&q=80&w=800';
+const IMG_DAL_BHAT = 'https://images.unsplash.com/photo-1764699486769-fc9a8b03130a?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&q=80&w=800';
+const IMG_WAIWAI = 'https://images.unsplash.com/photo-1591814252471-068b545dff62?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&q=80&w=800';
+const IMG_CHAI = 'https://images.unsplash.com/photo-1648192312898-838f9b322f47?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&q=80&w=800';
+const IMG_INTERIOR = 'https://images.unsplash.com/photo-1669043962012-a5b8496cd664?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&q=80&w=800';
+
+const hashString = (value: string) => {
+  let hash = 5381;
+  for (let i = 0; i < value.length; i++) hash = (hash * 33) ^ value.charCodeAt(i);
+  return hash >>> 0;
+};
+
+const pickFromPool = (pool: string[], seed: string) => {
+  if (pool.length === 0) return DEFAULT_FOOD_IMG;
+  return pool[hashString(seed) % pool.length];
+};
+
+const FOOD_GENERIC_POOL = [DEFAULT_FOOD_IMG, IMG_THUKPA, IMG_MOMO, IMG_DAL_BHAT, IMG_WAIWAI];
+// Use a single neutral placeholder for beverages unless a specific image is set.
+// This avoids showing one drink's photo for another drink.
+const DRINK_GENERIC_POOL = [DEFAULT_DRINK_IMG];
+
+const CATEGORY_IMAGE_POOLS: Record<string, string[]> = {
+  // Beverages
+  'Hot Beverage': [IMG_CHAI, ...DRINK_GENERIC_POOL],
+  Shakes: [...DRINK_GENERIC_POOL],
+  'Cold Drinks': [...DRINK_GENERIC_POOL],
+  Rum: [...DRINK_GENERIC_POOL],
+  Whiskey: [...DRINK_GENERIC_POOL],
+  Vodka: [...DRINK_GENERIC_POOL],
+  Breezer: [...DRINK_GENERIC_POOL],
+  Beer: [...DRINK_GENERIC_POOL],
+  Wine: [...DRINK_GENERIC_POOL],
+  'Can Beer': [...DRINK_GENERIC_POOL],
+  Brandy: [...DRINK_GENERIC_POOL],
+
+  // Food (category-appropriate)
+  Soup: [IMG_THUKPA, ...FOOD_GENERIC_POOL],
+  Noodles: [IMG_WAIWAI, IMG_THUKPA, ...FOOD_GENERIC_POOL],
+  'Himalayan Delicacy': [IMG_MOMO, IMG_THUKPA, IMG_WAIWAI, ...FOOD_GENERIC_POOL],
+};
+
+const getAutoImageUrl = (name: string, category: string) => {
+  // Prefer any uploaded local image that matches by name.
+  const local = getLocalImageForItem(name);
+  if (local) return local;
+
+  // For drinks, fall back to a neutral common photo.
+  if (DRINK_CATEGORIES.has(category)) return LOCAL_COMMON_DRINK_IMAGE;
+
+  const pool = CATEGORY_IMAGE_POOLS[category] ?? (BEVERAGE_CATEGORIES.has(category) ? DRINK_GENERIC_POOL : FOOD_GENERIC_POOL);
+  return pickFromPool(pool, `${category}|${name}`);
+};
 
 const seedItems: SeedItem[] = [
   // Hot Beverage
@@ -74,7 +229,7 @@ const seedItems: SeedItem[] = [
   { name: 'Cold Coffee', category: 'Shakes', price: 110, veg: true },
 
   // Cold Drinks
-  { name: 'Red Blue', category: 'Cold Drinks', price: 150, veg: true },
+  { name: 'Red Bull', category: 'Cold Drinks', price: 150, veg: true },
   { name: 'Hell', category: 'Cold Drinks', price: 80, veg: true },
   { name: 'Predator', category: 'Cold Drinks', price: 80, veg: true },
   { name: 'Coke', category: 'Cold Drinks', price: 30, veg: true },
@@ -352,7 +507,7 @@ const seedItems: SeedItem[] = [
   { name: 'Morpheus (60ml)', category: 'Brandy', price: 80, veg: true },
 ];
 
-const getDefaultImage = (category: string) => (DRINK_CATEGORIES.has(category) ? DEFAULT_DRINK_IMG : DEFAULT_FOOD_IMG);
+const getDefaultImage = (category: string) => (BEVERAGE_CATEGORIES.has(category) ? DEFAULT_DRINK_IMG : DEFAULT_FOOD_IMG);
 
 const defaultMenuItems: MenuItem[] = seedItems.map((item, index) => ({
   id: index + 1,
@@ -361,7 +516,7 @@ const defaultMenuItems: MenuItem[] = seedItems.map((item, index) => ({
   description: item.description ?? '',
   price: item.price,
   veg: item.veg,
-  image: item.image ?? getDefaultImage(item.category),
+  image: item.image ?? getAutoImageUrl(item.name, item.category),
 }));
 
 type MenuContextType = {
@@ -374,18 +529,176 @@ type MenuContextType = {
 
 const MenuContext = createContext<MenuContextType | null>(null);
 
-// Bump storage key so newly seeded menu replaces older placeholder data.
+// Stored menu can be edited in Admin. We migrate placeholder images in-place
+// instead of bumping the key (which would wipe admin edits).
 const STORAGE_KEY = 'kalika_menu_items_v2';
+
+const migrateMenuImages = (items: MenuItem[]) =>
+  items.map((item) => {
+    // Migrations for naming consistency
+    const canonicalName = item.category === 'Cold Drinks' && item.name === 'Red Blue' ? 'Red Bull' : item.name;
+
+    if (canonicalName !== item.name) {
+      item = { ...item, name: canonicalName };
+    }
+
+    const matchingLocal = getLocalImageForItem(item.name);
+    const currentLocalFile = item.image ? extractLocalUploadedFileFromUrl(item.image) : undefined;
+    const expectedLocalFile = matchingLocal ? extractLocalUploadedFileFromUrl(matchingLocal) : undefined;
+    const hasLocalCommon = currentLocalFile?.toLowerCase() === 'common.jpg';
+    const hasBrokenLocal = item.image?.includes('/assets/images/') && !currentLocalFile;
+    const hasTeaOrCoffeeLocal = DRINK_CATEGORIES.has(item.category) && isTeaOrCoffeeFileName(currentLocalFile);
+    const hasChaiPlaceholder =
+      DRINK_CATEGORIES.has(item.category) &&
+      !!item.image &&
+      (item.image === IMG_CHAI || item.image.includes('photo-1648192312898-838f9b322f47'));
+
+    // Categories with dedicated uploaded photos; ensure each item uses its own.
+    if (
+      item.category === 'Thali' &&
+      matchingLocal &&
+      expectedLocalFile &&
+      (currentLocalFile?.toLowerCase() ?? '') !== expectedLocalFile.toLowerCase()
+    ) {
+      return { ...item, image: matchingLocal };
+    }
+
+    if (
+      item.category === 'From Tawa' &&
+      matchingLocal &&
+      expectedLocalFile &&
+      (currentLocalFile?.toLowerCase() ?? '') !== expectedLocalFile.toLowerCase()
+    ) {
+      return { ...item, image: matchingLocal };
+    }
+
+    if (
+      item.category === 'Hot Beverage' &&
+      matchingLocal &&
+      expectedLocalFile &&
+      (currentLocalFile?.toLowerCase() ?? '') !== expectedLocalFile.toLowerCase()
+    ) {
+      return { ...item, image: matchingLocal };
+    }
+
+    if (
+      item.category === 'Shakes' &&
+      matchingLocal &&
+      expectedLocalFile &&
+      (currentLocalFile?.toLowerCase() ?? '') !== expectedLocalFile.toLowerCase()
+    ) {
+      return { ...item, image: matchingLocal };
+    }
+
+    if (
+      item.category === 'Cold Drinks' &&
+      matchingLocal &&
+      expectedLocalFile &&
+      (currentLocalFile?.toLowerCase() ?? '') !== expectedLocalFile.toLowerCase()
+    ) {
+      return { ...item, image: matchingLocal };
+    }
+
+    if (
+      item.category === 'Soup' &&
+      matchingLocal &&
+      expectedLocalFile &&
+      (currentLocalFile?.toLowerCase() ?? '') !== expectedLocalFile.toLowerCase()
+    ) {
+      return { ...item, image: matchingLocal };
+    }
+
+    if (
+      item.category === 'Sides' &&
+      matchingLocal &&
+      expectedLocalFile &&
+      (currentLocalFile?.toLowerCase() ?? '') !== expectedLocalFile.toLowerCase()
+    ) {
+      return { ...item, image: matchingLocal };
+    }
+
+    if (
+      item.category === 'Bites' &&
+      matchingLocal &&
+      expectedLocalFile &&
+      (currentLocalFile?.toLowerCase() ?? '') !== expectedLocalFile.toLowerCase()
+    ) {
+      return { ...item, image: matchingLocal };
+    }
+
+    if (
+      item.category === 'Himalayan Delicacy' &&
+      matchingLocal &&
+      expectedLocalFile &&
+      (currentLocalFile?.toLowerCase() ?? '') !== expectedLocalFile.toLowerCase()
+    ) {
+      return { ...item, image: matchingLocal };
+    }
+
+    if (
+      item.category === 'Main Course' &&
+      /^chicken\b/i.test(item.name) &&
+      matchingLocal &&
+      expectedLocalFile &&
+      (currentLocalFile?.toLowerCase() ?? '') !== expectedLocalFile.toLowerCase()
+    ) {
+      return { ...item, image: matchingLocal };
+    }
+
+    if (
+      item.category === 'Biryani' &&
+      matchingLocal &&
+      expectedLocalFile &&
+      (currentLocalFile?.toLowerCase() ?? '') !== expectedLocalFile.toLowerCase()
+    ) {
+      return { ...item, image: matchingLocal };
+    }
+
+    const hasPlaceholderImage =
+      !item.image ||
+      item.image.includes('source.unsplash.com') ||
+      item.image === DEFAULT_FOOD_IMG ||
+      item.image === DEFAULT_DRINK_IMG ||
+      item.image === getDefaultImage(item.category) ||
+      item.image.includes('/assets/images/common.jpg') ||
+      hasLocalCommon ||
+      hasBrokenLocal ||
+      hasChaiPlaceholder ||
+      hasTeaOrCoffeeLocal;
+
+    if (!hasPlaceholderImage) return item;
+
+    // If a local uploaded image exists for this item name, always prefer it over
+    // placeholders and broken/incorrect local URLs.
+    if (matchingLocal) return { ...item, image: matchingLocal };
+
+    // If a drink somehow has a tea/coffee photo, force it to common.jpg.
+    if (DRINK_CATEGORIES.has(item.category)) return { ...item, image: LOCAL_COMMON_DRINK_IMAGE };
+
+    return { ...item, image: getAutoImageUrl(item.name, item.category) };
+  });
 
 export function MenuProvider({ children }: { children: ReactNode }) {
   const [menuItems, setMenuItemsState] = useState<MenuItem[]>(() => {
     try {
       const stored = localStorage.getItem(STORAGE_KEY);
-      return stored ? JSON.parse(stored) : defaultMenuItems;
+      return stored ? migrateMenuImages(JSON.parse(stored)) : defaultMenuItems;
     } catch {
       return defaultMenuItems;
     }
   });
+
+  // Ensure any previously saved placeholder/broken image URLs are upgraded
+  // and persisted even if state was already initialized.
+  useEffect(() => {
+    const migrated = migrateMenuImages(menuItems);
+    const changed = migrated.some((m, idx) => m.image !== menuItems[idx]?.image);
+    if (changed) {
+      setMenuItemsState(migrated);
+      localStorage.setItem(STORAGE_KEY, JSON.stringify(migrated));
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   const persist = (items: MenuItem[]) => {
     setMenuItemsState(items);
