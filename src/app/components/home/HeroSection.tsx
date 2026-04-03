@@ -70,13 +70,13 @@ export default function HeroSection() {
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.6, delay: 0.2 }}
-          className="inline-flex items-center gap-3 mb-8"
+          className="flex flex-wrap items-center justify-center gap-3 mb-8"
         >
-          <span className="h-px w-12 bg-[#E8882A]" />
-          <span className="text-[#E8882A] uppercase tracking-[0.25em] text-sm font-semibold">
+          <span className="h-px w-6 sm:w-12 bg-[#E8882A]" />
+          <span className="text-[#E8882A] uppercase tracking-[0.25em] text-xs sm:text-sm font-semibold text-center">
             Majitar, Sikkim 737136
           </span>
-          <span className="h-px w-12 bg-[#E8882A]" />
+          <span className="h-px w-6 sm:w-12 bg-[#E8882A]" />
         </motion.div>
 
         {/* Main Headline */}
