@@ -64,7 +64,7 @@ export default function HeroSection() {
       <div className="absolute top-0 left-0 right-0 h-1 bg-gradient-to-r from-transparent via-[#E8882A] to-transparent opacity-60" />
 
       {/* Content */}
-      <div className="relative z-10 text-center px-6 max-w-5xl mx-auto">
+      <div className="relative z-10 text-center px-6 max-w-5xl mx-auto pt-16 md:pt-0">
         {/* Label */}
         <motion.div
           initial={{ opacity: 0, y: 20 }}
