@@ -1,5 +1,6 @@
 import { useState, useEffect, useRef } from 'react';
 import { useNavigate } from 'react-router';
+import { Helmet } from 'react-helmet-async';
 import Navbar from '../components/Navbar';
 import Footer from '../components/Footer';
 import WhatsAppButton from '../components/WhatsAppButton';
@@ -8,6 +9,10 @@ import { useMenu, publicMenuCategoryGroups } from '../context/MenuContext';
 import { UtensilsCrossed, Search, Filter } from 'lucide-react';
 
 export default function MenuPage() {
+  const siteUrl = 'https://kalikaresturant.co.in';
+  const pageUrl = `${siteUrl}/menu`;
+  const ogImage = `${siteUrl}/assets/images/common.jpg`;
+
   const { menuItems } = useMenu();
   const navigate = useNavigate();
   const groupNames = publicMenuCategoryGroups.map((g) => g.name);
@@ -62,6 +67,24 @@ export default function MenuPage() {
 
   return (
     <div className="min-h-screen bg-[#FDF6EC]">
+      <Helmet>
+        <title>Menu | Kalika Restaurant (Kalika Resturant)</title>
+        <meta
+          name="description"
+          content="Explore the full menu of Kalika Restaurant (Kalika Resturant), Majitar, Sikkim (737136) — momos, thukpa, chowmein, thali, and more."
+        />
+        <link rel="canonical" href={pageUrl} />
+
+        <meta property="og:title" content="Menu | Kalika Restaurant" />
+        <meta property="og:description" content="Explore our full menu — fresh ingredients and authentic flavors." />
+        <meta property="og:url" content={pageUrl} />
+        <meta property="og:image" content={ogImage} />
+
+        <meta name="twitter:card" content="summary_large_image" />
+        <meta name="twitter:title" content="Menu | Kalika Restaurant" />
+        <meta name="twitter:description" content="Explore our full menu — fresh ingredients and authentic flavors." />
+        <meta name="twitter:image" content={ogImage} />
+      </Helmet>
       <Navbar />
 
       {/* Page Header */}

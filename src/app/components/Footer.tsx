@@ -1,4 +1,5 @@
 import { Link, useLocation, useNavigate } from 'react-router';
+import type { MouseEventHandler } from 'react';
 import { UtensilsCrossed, Instagram, Facebook, MessageCircle, Mail, Phone, MapPin, Clock, ArrowUp, Lock } from 'lucide-react';
 
 export default function Footer() {
@@ -15,6 +16,12 @@ export default function Footer() {
     } else {
       navigate('/', { state: { scrollTo: hash } });
     }
+  };
+
+  const handleHomeClick: MouseEventHandler<HTMLAnchorElement> = (e) => {
+    if (!isHome) return;
+    e.preventDefault();
+    scrollTop();
   };
 
   return (
@@ -75,7 +82,11 @@ export default function Footer() {
               ].map((link) => (
                 <li key={link.label}>
                   {link.type === 'router' ? (
-                    <Link to={link.to!} className="text-gray-400 hover:text-[#E8882A] transition-colors text-sm flex items-center gap-2 group">
+                    <Link
+                      to={link.to!}
+                      onClick={link.label === 'Home' ? handleHomeClick : undefined}
+                      className="text-gray-400 hover:text-[#E8882A] transition-colors text-sm flex items-center gap-2 group"
+                    >
                       <span className="w-1 h-1 rounded-full bg-[#E8882A]/40 group-hover:bg-[#E8882A] transition-colors" />
                       {link.label === 'Admin' && <Lock className="w-3 h-3 opacity-60" />}
                       {link.label}
@@ -104,10 +115,15 @@ export default function Footer() {
                   <Clock className="w-4 h-4 text-[#E8882A] flex-shrink-0" />
                   Open Daily: 8:00 AM – 10:00 PM
                 </div>
-                <div className="flex items-center gap-2">
+                <a
+                  href="https://maps.app.goo.gl/k9QM4D9VufNNrPBL8"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="flex items-center gap-2 hover:text-[#E8882A] transition-colors"
+                >
                   <MapPin className="w-4 h-4 text-[#E8882A] flex-shrink-0" />
-                  Lower Mazhitar, East Sikkim
-                </div>
+                  Majitar, Sikkim 737136, India
+                </a>
               </div>
               <a
                 href="https://wa.me/918768976350?text=Hello%20Kalika%20Restaurant!%20%F0%9F%99%8F%20I%20would%20like%20to%20reserve%20a%20table.%0A%0AName%3A%20%0ADate%3A%20%0ATime%3A%20%0ANo.%20of%20Guests%3A%20%0A%0APlease%20confirm%20my%20booking.%20Thank%20you!"
@@ -132,7 +148,7 @@ export default function Footer() {
         {/* Bottom Bar */}
         <div className="flex flex-col sm:flex-row items-center justify-between gap-4">
           <p className="text-gray-500 text-sm text-center">
-            © 2026 Kalika Restaurant, Lower Mazhitar, East Sikkim. All rights reserved.
+            © 2026 Kalika Restaurant, Majitar, Sikkim 737136, India. All rights reserved.
           </p>
           <button
             onClick={scrollTop}

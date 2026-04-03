@@ -6,8 +6,8 @@ const contactItems = [
     icon: Phone,
     label: 'Phone',
     value: '8768976350',
-    href: 'tel:8768976350',
-    display: '+91 8768 976 350',
+    href: 'tel:+918768976350',
+    display: '+91 87689 76350',
   },
   {
     icon: Mail,
@@ -20,8 +20,8 @@ const contactItems = [
     icon: MapPin,
     label: 'Location',
     value: '',
-    href: 'https://maps.google.com/?q=Lower+Mazhitar+East+Sikkim',
-    display: 'Lower Mazhitar, East Sikkim',
+    href: 'https://maps.app.goo.gl/k9QM4D9VufNNrPBL8',
+    display: 'Majitar, Sikkim 737136, India',
   },
   {
     icon: Clock,
@@ -132,7 +132,7 @@ export default function ContactSection() {
             className="rounded-3xl overflow-hidden border border-[#E8882A]/20 shadow-xl"
           >
             <iframe
-              src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3559.3!2d88.5!3d27.3!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x39e6a56c7b!2sLower+Mazhitar%2C+East+Sikkim!5e0!3m2!1sen!2sin!4v1234567890"
+              src="https://www.google.com/maps?q=Kalika%20Restaurant%2C%20Majitar%2C%20Sikkim%20737136&output=embed"
               width="100%"
               height="100%"
               style={{ border: 0, minHeight: '420px' }}

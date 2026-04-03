@@ -68,7 +68,7 @@ export default function WelcomeSection() {
             </h2>
 
             <p className="text-[#2C1810] mb-5 leading-relaxed text-lg">
-              Welcome to <strong>Kalika Restaurant</strong>, nestled in the heart of Lower Mazhitar, East Sikkim. 
+              Welcome to <strong>Kalika Restaurant</strong>, nestled in the heart of Majitar, Sikkim (737136). 
               Founded by <strong>Bikash Limbu</strong>, our restaurant brings you the authentic flavors of 
               Sikkimese, Nepali, and Chinese cuisine — prepared with love and traditional recipes 
               passed down through generations.

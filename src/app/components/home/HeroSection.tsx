@@ -74,7 +74,7 @@ export default function HeroSection() {
         >
           <span className="h-px w-12 bg-[#E8882A]" />
           <span className="text-[#E8882A] uppercase tracking-[0.25em] text-sm font-semibold">
-            Lower Mazhitar, East Sikkim
+            Majitar, Sikkim 737136
           </span>
           <span className="h-px w-12 bg-[#E8882A]" />
         </motion.div>

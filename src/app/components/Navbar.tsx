@@ -1,5 +1,5 @@
 import { Link, useLocation, useNavigate } from 'react-router';
-import { useState, useEffect } from 'react';
+import { useState, useEffect, type MouseEvent } from 'react';
 import { Menu, X, UtensilsCrossed, MessageCircle } from 'lucide-react';
 
 export default function Navbar() {
@@ -37,6 +37,14 @@ export default function Navbar() {
     }
   };
 
+  const handleHomeClick = (e?: MouseEvent) => {
+    setMobileOpen(false);
+    if (isHome) {
+      e?.preventDefault();
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+  };
+
   return (
     <>
       <nav
@@ -48,7 +56,7 @@ export default function Navbar() {
       >
         <div className="max-w-7xl mx-auto px-6 py-3 flex items-center justify-between">
           {/* Logo */}
-          <Link to="/" className="flex items-center gap-3 group">
+          <Link to="/" onClick={handleHomeClick} className="flex items-center gap-3 group">
             <div className="relative flex items-center justify-center w-12 h-12 bg-[#1B3A2D] rounded-xl shadow-md group-hover:bg-[#E8882A] transition-colors duration-300">
               <UtensilsCrossed className="w-6 h-6 text-[#E8882A] group-hover:text-white transition-colors duration-300" />
             </div>
@@ -69,6 +77,7 @@ export default function Navbar() {
                 <Link
                   key={link.label}
                   to={link.to}
+                  onClick={link.to === '/' ? handleHomeClick : undefined}
                   className={`relative font-semibold transition-colors duration-200 group ${
                     location.pathname === link.to ? 'text-[#E8882A]' : 'text-[#2C1810] hover:text-[#E8882A]'
                   }`}
@@ -121,6 +130,7 @@ export default function Navbar() {
                 <Link
                   key={link.label}
                   to={link.to}
+                  onClick={link.to === '/' ? handleHomeClick : undefined}
                   className="block font-semibold text-[#2C1810] hover:text-[#E8882A] py-2 border-b border-[#E8882A]/10"
                 >
                   {link.label}
